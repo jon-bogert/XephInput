@@ -18,12 +18,6 @@ namespace xe
 
         std::list<EventEntry> events;
 
-        template <typename Signature>
-        static bool CheckSignature()
-        {
-            
-        }
-
     public:
         void Subscribe(void* object, std::function<void(void)> function)
         {

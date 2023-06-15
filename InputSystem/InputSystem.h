@@ -21,14 +21,20 @@ namespace xe
         F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15,
         Pause
     };
-    enum class Mouse
+    class Mouse
     {
-        Left, Right, Middle, Button4, Button5
+    public:
+        Mouse() = delete;
+        enum class Button
+        {
+            Left, Right, Middle, Button4, Button5
+        };
     };
 
     class Gamepad final
     {
     public:
+        Gamepad() = delete;
         enum class Button
         {
             A, B, X, Y, LB, RB, Select, Start, LS_Press, RS_Press, LT, RT,
