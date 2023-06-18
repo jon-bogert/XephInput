@@ -196,6 +196,21 @@ bool xe::InputSystem::GetKeyUp(Key keycode)
 	return Get()._keyHandler->GetKeyUp(keycode);
 }
 
+bool xe::InputSystem::GetMouseHold(Mouse::Button btncode)
+{
+	return Get()._keyHandler->GetMouseHold(btncode);
+}
+
+bool xe::InputSystem::GetMouseDown(Mouse::Button btncode)
+{
+	return Get()._keyHandler->GetMouseDown(btncode);
+}
+
+bool xe::InputSystem::GetMouseUp(Mouse::Button btncode)
+{
+	return Get()._keyHandler->GetMouseUp(btncode);
+}
+
 //================================================================================
 //                       IMPLEMENTATION
 //================================================================================

@@ -24,6 +24,10 @@ namespace xe
 		bool GetKeyHold(Key keycode);
 		bool GetKeyDown(Key keycode);
 		bool GetKeyUp(Key keycode);
+
+		bool GetMouseHold(Mouse::Button btncode);
+		bool GetMouseDown(Mouse::Button btncode);
+		bool GetMouseUp(Mouse::Button btncode);
 	};
 }
 

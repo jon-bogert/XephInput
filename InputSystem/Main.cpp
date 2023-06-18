@@ -18,9 +18,9 @@ int main()
 	{
 		xe::InputSystem::Update();
 
-		if (xe::InputSystem::GetKeyRepeat(xe::Key::Space))
+		if (xe::InputSystem::GetMouseDown(xe::Mouse::Button::Button5))
 		{
-			std::cout << "BAM";
+			std::cout << "BAM" << std::endl;
 		}
 		if (xe::InputSystem::GetKeyDown(xe::Key::Esc))
 			break;

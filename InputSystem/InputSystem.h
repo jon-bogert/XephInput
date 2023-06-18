@@ -6,7 +6,7 @@
 
 namespace xe
 {
-    enum class Key
+    enum class Key //will typecast to VK_ macros
     {
         Backspace = 8, Tab, Enter = 13, Shift = 16, Ctrl, Alt, Pause, CapsLock,
         Esc = 27, Space = 32, PageUp, PageDown, End, Home, Left, Up, Right, Down, PrintScreen = 44, Insert, Delete,
@@ -17,13 +17,13 @@ namespace xe
         F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
         LShift = 160, RShift, LCtrl, RCtrl, LAlt, RAlt
     };
-    class Mouse
+    class Mouse //will typecast to VK_ macros
     {
     public:
         Mouse() = delete;
         enum class Button
         {
-            Left, Right, Middle, Button4, Button5
+            Left = 1, Right, Middle = 4, Button4, Button5
         };
     };
 
@@ -100,6 +100,9 @@ namespace xe
         static bool GetKeyHold(Key keycode);
         static bool GetKeyDown(Key keycode);
         static bool GetKeyUp(Key keycode);
+        static bool GetMouseHold(Mouse::Button btncode);
+        static bool GetMouseDown(Mouse::Button btncode);
+        static bool GetMouseUp(Mouse::Button btncode);
 
 	private:
 		// Public impl

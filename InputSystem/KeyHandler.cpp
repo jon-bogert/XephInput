@@ -24,10 +24,12 @@ void xe::KeyHandler::Update()
 void xe::KeyHandler::PollKeys()
 {
 	_keyBuffer.reset();
-	for (uint8_t i = 8; i < 166; ++i)
+	for (uint8_t i = 1; i < 166; ++i)
 	{
 		//Don't check keys that arent needed
-		if (btwn(i, 10, 12) ||
+		if (i == 3 ||
+			i == 7 ||
+			btwn(i, 10, 12) ||
 			btwn(i, 14, 15) ||
 			btwn(i, 21, 26) ||
 			btwn(i, 28, 31) ||
@@ -58,4 +60,19 @@ bool xe::KeyHandler::GetKeyDown(Key keycode)
 bool xe::KeyHandler::GetKeyUp(Key keycode)
 {
 	return _keyUp.test(static_cast<uint8_t>(keycode));
+}
+
+bool xe::KeyHandler::GetMouseHold(Mouse::Button btncode)
+{
+	return _keyHold.test(static_cast<uint8_t>(btncode));
+}
+
+bool xe::KeyHandler::GetMouseDown(Mouse::Button btncode)
+{
+	return _keyDown.test(static_cast<uint8_t>(btncode));
+}
+
+bool xe::KeyHandler::GetMouseUp(Mouse::Button btncode)
+{
+	return _keyUp.test(static_cast<uint8_t>(btncode));
 }
