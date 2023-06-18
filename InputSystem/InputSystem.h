@@ -59,7 +59,7 @@ namespace xe
         };
 
         XINPUT_STATE _state{};
-		HWND* _hwnd = nullptr;
+		HWND _hwnd = nullptr;
 
         KeyHandler* _keyHandler = nullptr;
 
@@ -79,13 +79,17 @@ namespace xe
         float _deadzoneMinimum = 0.3f;
         float _deadzoneMaximum = 1.f;
 
+        POINT _mousePos;
+        float _mouseDelta[2] = { 0.f, 0.f };
+        bool _captureMouse = false;
+
         InputSystem();
 		static InputSystem& Get();
 	public:
 
         ~InputSystem();
 
-		static void Initialize(HWND& hwnd, const bool controllerActive = true);
+		static void Initialize(HWND& hwnd);
 		static void Update();
 
         static bool IsControllerConnected(const uint8_t num);
@@ -104,9 +108,16 @@ namespace xe
         static bool GetMouseDown(Mouse::Button btncode);
         static bool GetMouseUp(Mouse::Button btncode);
 
+        static void GetMousePos(float* out_v2, bool relativeToWindow = true);
+        static void GetMouseDelta(float* out_v2);
+
+        static void SetCaptureMouse(const bool captureMouse);
+        static bool GetCaptureMouse();
+        static bool MouseOverWindow();
+
 	private:
 		// Public impl
-		void _Initialize(HWND& hwnd, const bool controllerActive);
+		void _Initialize(HWND& hwnd);
 		void _Update();
 
         bool _IsControllerConnected(const uint8_t num) const;
@@ -115,9 +126,10 @@ namespace xe
         bool _GetGamepadUp(Gamepad::Button button, uint8_t num = 0);
         void _GetGamepadAxis(float* out_v2, Gamepad::Axis axis, uint8_t num = 0);
 
-
         float _GetTriggerThreshold() const;
         void _SetTriggerThreshold(const float threshold);
+
+        void _GetMousePos(float* out_v2, bool relativeToWindow);
 
         void UpdateAxisState(uint8_t index);
 
