@@ -1,4 +1,5 @@
 #include "InputSystem.h"
+#include "KeyHandler.h"
 
 using namespace xe;
 
@@ -114,15 +115,26 @@ namespace
 	}
 }
 
+xe::InputSystem::InputSystem()
+{
+	_keyHandler = new KeyHandler();
+}
+
 InputSystem& xe::InputSystem::Get()
 {
 	static InputSystem inst;
 	return inst;
 }
 
+xe::InputSystem::~InputSystem()
+{
+	delete _keyHandler;
+}
+
 //================================================================================
 //                       STATIC INTERFACES
 //================================================================================
+
 
 void xe::InputSystem::Initialize(HWND& hwnd, const bool controllerActive)
 {
@@ -167,6 +179,21 @@ float xe::InputSystem::GetTriggerThreshold()
 void xe::InputSystem::SetTriggerThreshold(const float threshold)
 {
 	Get()._SetTriggerThreshold(threshold);
+}
+
+bool xe::InputSystem::GetKeyHold(Key keycode)
+{
+	return Get()._keyHandler->GetKeyHold(keycode);
+}
+
+bool xe::InputSystem::GetKeyDown(Key keycode)
+{
+	return Get()._keyHandler->GetKeyDown(keycode);
+}
+
+bool xe::InputSystem::GetKeyUp(Key keycode)
+{
+	return Get()._keyHandler->GetKeyUp(keycode);
 }
 
 //================================================================================
@@ -217,7 +244,6 @@ void xe::InputSystem::_Update()
 			//Store current values
 			_controllerButtonHold[i] = buttonState;
 
-			//std::cout << _state.Gamepad.sThumbLX << std::endl;
 			// Update axis
 			_controllerAxisState[i].lx = (static_cast<short>(_state.Gamepad.sThumbLX) + 0.5f) * STICK_2_FLT;
 			_controllerAxisState[i].ly = (static_cast<short>(_state.Gamepad.sThumbLY) + 0.5f) * STICK_2_FLT;
@@ -235,6 +261,7 @@ void xe::InputSystem::_Update()
 		_controllerCountChange = true;
 		_controllerCount = controllerCount;
 	}
+	_keyHandler->Update();
 }
 
 bool xe::InputSystem::_IsControllerConnected(const uint8_t num) const

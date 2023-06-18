@@ -1,0 +1,75 @@
+#pragma once
+
+// Alphanumeric keys
+#define APLHA_KEYCODE_A         0x00000001 // 65 - 90 (26 vals)
+#define APLHA_KEYCODE_B         0x00000002
+#define APLHA_KEYCODE_C         0x00000004
+#define APLHA_KEYCODE_D         0x00000008
+#define APLHA_KEYCODE_E         0x00000010
+#define APLHA_KEYCODE_F         0x00000020
+#define APLHA_KEYCODE_G         0x00000040
+#define APLHA_KEYCODE_H         0x00000080
+#define APLHA_KEYCODE_I         0x00000100
+#define APLHA_KEYCODE_J         0x00000200
+#define APLHA_KEYCODE_K         0x00000400
+#define APLHA_KEYCODE_L         0x00000800
+#define APLHA_KEYCODE_M         0x00001000
+#define APLHA_KEYCODE_N         0x00002000
+#define APLHA_KEYCODE_O         0x00004000
+#define APLHA_KEYCODE_P         0x00008000
+#define APLHA_KEYCODE_Q         0x00010000
+#define APLHA_KEYCODE_R         0x00020000
+#define APLHA_KEYCODE_S         0x00040000
+#define APLHA_KEYCODE_T         0x00080000
+#define APLHA_KEYCODE_U         0x00100000
+#define APLHA_KEYCODE_V         0x00200000
+#define APLHA_KEYCODE_W         0x00400000
+#define APLHA_KEYCODE_X         0x00800000
+#define APLHA_KEYCODE_Y         0x01000000
+#define APLHA_KEYCODE_Z         0x02000000
+						        
+// Function keys		        
+#define NUM_KEYCODE_F1          0x00000001 //112 - 123, 48 - 57
+#define NUM_KEYCODE_F2          0x00000002
+#define NUM_KEYCODE_F3          0x00000004
+#define NUM_KEYCODE_F4          0x00000008
+#define NUM_KEYCODE_F5          0x00000010
+#define NUM_KEYCODE_F6          0x00000020
+#define NUM_KEYCODE_F7          0x00000040
+#define NUM_KEYCODE_F8          0x00000080
+#define NUM_KEYCODE_F9          0x00000100
+#define NUM_KEYCODE_F10         0x00000200
+#define NUM_KEYCODE_F11         0x00000400
+#define NUM_KEYCODE_F12         0x00000800
+#define NUM_KEYCODE_0           0x00001000
+#define NUM_KEYCODE_1           0x00002000
+#define NUM_KEYCODE_2           0x00004000
+#define NUM_KEYCODE_3           0x00008000
+#define NUM_KEYCODE_4           0x00010000
+#define NUM_KEYCODE_5           0x00020000
+#define NUM_KEYCODE_6           0x00040000
+#define NUM_KEYCODE_7           0x00080000
+#define NUM_KEYCODE_8           0x00100000
+#define NUM_KEYCODE_9           0x00200000
+
+// Special keys
+#define SPEC_KEYCODE_BACK       0x00000001 // 8, 9, 3, 16,  17, 18, 20, 17, 32, 37, 48, 49, 40, 46, 160, 161, 162, 163, 164, 165
+#define SPEC_KEYCODE_TAB        0x00000002
+#define SPEC_KEYCODE_ENTER      0x00000004
+#define SPEC_KEYCODE_SHIFT      0x00000008
+#define SPEC_KEYCODE_CONTROL    0x00000010
+#define SPEC_KEYCODE_ALT        0x00000020
+#define SPEC_KEYCODE_CAPS       0x00000040
+#define SPEC_KEYCODE_ESCAPE     0x00000080
+#define SPEC_KEYCODE_SPACE      0x00000100
+#define SPEC_KEYCODE_LEFT       0x00000200
+#define SPEC_KEYCODE_UP         0x00000400
+#define SPEC_KEYCODE_RIGHT      0x00000800
+#define SPEC_KEYCODE_DOWN       0x00001000
+#define SPEC_KEYCODE_DELETE     0x00002000
+#define SPEC_KEYCODE_LSHIFT     0x00004000
+#define SPEC_KEYCODE_RSHIFT     0x00008000
+#define SPEC_KEYCODE_LCONTROL   0x00010000
+#define SPEC_KEYCODE_RCONTROL   0x00020000
+#define SPEC_KEYCODE_LALT       0x00040000
+#define SPEC_KEYCODE_RALT       0x00080000

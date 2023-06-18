@@ -8,18 +8,14 @@ namespace xe
 {
     enum class Key
     {
-        Unkwn = -1,
-        A = 0, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
-        _0, _1, _2, _3, _4, _5, _6, _7, _8, _9,
-        Escape, LCtrl, LShift, LAlt, LWin, RCtrl, RShift, RAlt, RWin,
-        Menu, LBracket, RBracket, Semicolon, Comma, Period, Quote, ForwardSlash, Backslash,
-        Tilde, Equal, Dash, Space, Enter, Backspace, Tab,
-        PageUp, PageDown, End, Home, Insert, Delete,
-        NumAdd, NumMinus, NumMultiply, NumDivide,
-        Left, Right, Up, Down,
-        Num0, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9,
-        F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15,
-        Pause
+        Backspace = 8, Tab, Enter = 13, Shift = 16, Ctrl, Alt, Pause, CapsLock,
+        Esc = 27, Space = 32, PageUp, PageDown, End, Home, Left, Up, Right, Down, PrintScreen = 44, Insert, Delete,
+        Zero = 48, One, Two, Three, Four, Five, Six, Seven, Eight, Nine,
+        A = 65, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
+        LWin, RWin, 
+        Numpad0 = 96, Numpad1, Numpad2, Numpad3, Numpad4, Numpad5, Numpad6, Numpad7, Numpad8, Numpad9, NumpadMult, NumpadPlus, NumpadMinus = 109, NumpadDecimal, NumpadDivide,
+        F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
+        LShift = 160, RShift, LCtrl, RCtrl, LAlt, RAlt
     };
     class Mouse
     {
@@ -48,6 +44,7 @@ namespace xe
         };
     };
 
+    class KeyHandler;
 	class InputSystem final
 	{
 	private:
@@ -63,6 +60,8 @@ namespace xe
 
         XINPUT_STATE _state{};
 		HWND* _hwnd = nullptr;
+
+        KeyHandler* _keyHandler = nullptr;
 
 		bool _controllerActive = true;
 		uint8_t  _controllerCount = 0;
@@ -80,9 +79,11 @@ namespace xe
         float _deadzoneMinimum = 0.3f;
         float _deadzoneMaximum = 1.f;
 
-		InputSystem() {}
+        InputSystem();
 		static InputSystem& Get();
 	public:
+
+        ~InputSystem();
 
 		static void Initialize(HWND& hwnd, const bool controllerActive = true);
 		static void Update();
@@ -95,6 +96,10 @@ namespace xe
 
         static float GetTriggerThreshold();
         static void SetTriggerThreshold(const float threshold);
+
+        static bool GetKeyHold(Key keycode);
+        static bool GetKeyDown(Key keycode);
+        static bool GetKeyUp(Key keycode);
 
 	private:
 		// Public impl
