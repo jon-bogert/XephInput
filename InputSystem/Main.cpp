@@ -20,10 +20,12 @@ struct Vector2
 
 class TestClass
 {
+	Vector2 pos = { 0, 0 };
 public:
 	void Print(xe::InputAction* ctx)
 	{
-		std::cout << "BAM" << std::endl;
+		ctx->ReadValue(&pos.x);
+		std::cout << pos.x << " " << pos.y << std::endl;
 	}
 };
 
@@ -37,19 +39,15 @@ int main()
 
 	TestClass tc;
 	xe::InputActionMap actionMap;
-	xe::InputAction* action = actionMap.CreateAction("Jump", xe::InputAction::Type::Button);
+	xe::InputAction* action = actionMap.CreateAction("Move", xe::InputAction::Type::Axis2D);
 	action->performed.Subscribe(&tc, std::bind(&TestClass::Print, &tc, std::placeholders::_1));
-	action->AddButton(xe::Gamepad::Button::A);
-	action->AddButton(xe::Key::Space);
+	action->Add2DAxis(xe::Gamepad::Axis::LS);
+	action->Add2DAxis(xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
 
 	while (true)
 	{
 		xe::InputSystem::Update();
 		actionMap.Update();
-
-		xe::InputSystem::GetKeyAxisComposite2D(&pos.x, xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
-
-		std::cout << pos.x << " " << pos.y << std::endl;
 	}
 	window.Terminate();
 

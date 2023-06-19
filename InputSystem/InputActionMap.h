@@ -71,9 +71,10 @@ namespace xe
         void AddButton(Gamepad::Button button, uint8_t player = 0);
         void AddButton(Key key);
         void Add1DAxis(Gamepad::Axis axis, uint8_t component, uint8_t player = 0);
+        void Add1DAxis(Key neg, Key pos);
         void Add2DAxis(Gamepad::Axis axis, uint8_t player = 0);
+        void Add2DAxis(Key negX, Key posX, Key negY, Key posY);
 
-        //TODO ADD Composites
         //TODO Remove Functions
 
         void ReadValue(void* out);
@@ -92,7 +93,9 @@ namespace xe
         std::map<Gamepad::Button, std::pair<bool, std::vector<InputAction*>>> _buttonActions;
         std::map<Key, std::pair<bool, std::vector<InputAction*>>> _keyActions;
         std::map<std::pair<Gamepad::Axis, uint8_t>, std::pair<float, std::vector<InputAction*>>> _1DActions;
+        std::map<std::pair<Key, Key>, std::pair<float, std::vector<InputAction*>>> _1DCompActions;
         std::map<Gamepad::Axis, std::pair<float[2], std::vector<InputAction*>>> _2DActions;
+        std::map<std::pair<std::pair<Key, Key>, std::pair<Key, Key>>, std::pair<float[2], std::vector<InputAction*>>> _2DCompActions;
 
     public:
         InputAction* CreateAction(std::string name, InputAction::Type type = InputAction::Type::Button, InputAction::ButtonEvent buttonEvent = InputAction::ButtonEvent::Down);

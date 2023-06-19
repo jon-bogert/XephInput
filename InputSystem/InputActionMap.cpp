@@ -84,6 +84,22 @@ void xe::InputAction::Add1DAxis(Gamepad::Axis axis, uint8_t component, uint8_t p
 	it->second.second.push_back(this);
 }
 
+void xe::InputAction::Add1DAxis(Key neg, Key pos)
+{
+	if (_type != Type::Axis1D) return;
+	auto it = _map->_1DCompActions.find({pos, neg}); // try to find existing input
+	if (it == _map->_1DCompActions.end()) // was not found, create one
+	{
+		_map->_1DCompActions.insert({ {pos, neg}, {} });
+		it = _map->_1DCompActions.find({ pos, neg });
+	}
+	//return if this InputAction is already assigned to this input
+	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
+
+	//Add InputAction ptr to this button list;
+	it->second.second.push_back(this);
+}
+
 void xe::InputAction::Add2DAxis(Gamepad::Axis axis, uint8_t player)
 {
 	if (_type != Type::Axis2D) return;
@@ -92,6 +108,22 @@ void xe::InputAction::Add2DAxis(Gamepad::Axis axis, uint8_t player)
 	{
 		_map->_2DActions.insert({ axis, {} });
 		it = _map->_2DActions.find(axis);
+	}
+	//return if this InputAction is already assigned to this button
+	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
+
+	//Add InputAction ptr to this button list;
+	it->second.second.push_back(this);
+}
+
+void xe::InputAction::Add2DAxis(Key negX, Key posX, Key negY, Key posY)
+{
+	if (_type != Type::Axis2D) return;
+	auto it = _map->_2DCompActions.find({ {negX, posX}, {negY, posY} }); // try to find existing button
+	if (it == _map->_2DCompActions.end()) // was not found, create one
+	{
+		_map->_2DCompActions.insert({ {{negX, posX}, {negY, posY}}, {} });
+		it = _map->_2DCompActions.find({ {negX, posX}, {negY, posY} });
 	}
 	//return if this InputAction is already assigned to this button
 	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
@@ -221,6 +253,22 @@ void xe::InputActionMap::Update()
 				}
 			}
 		}
+		for (auto& axis : _1DCompActions)
+		{
+			oldVal = axis.second.first;
+			newVal = InputSystem::GetKeyAxisComposite1D(axis.first.first, axis.first.second);
+			for (auto& action : axis.second.second)
+			{
+				if (oldVal != newVal)
+				{
+					axis.second.first = oldVal;
+					if (action->_triggered) continue;
+					action->_triggered = true;
+					*static_cast<float*>(action->_data) = newVal;
+					action->RaiseEvent();
+				}
+			}
+		}
 	}
 	{ // VEC2       [ Axis ]     [ oldVal | vector<pointers> ]
 		float oldVal[2] = { 0.f, 0.f };
@@ -230,6 +278,25 @@ void xe::InputActionMap::Update()
 			oldVal[0] = axis.second.first[0];
 			oldVal[1] = axis.second.first[1];
 			InputSystem::GetGamepadAxis(&newVal[0], axis.first);
+			for (auto& action : axis.second.second)
+			{
+				if (oldVal[0] != newVal[0] || oldVal[1] != newVal[1])
+				{
+					axis.second.first[0] = newVal[0];
+					axis.second.first[1] = newVal[1];
+					if (action->_triggered) continue;
+					action->_triggered = true;
+					*static_cast<float*>(action->_data) = newVal[0];
+					*(static_cast<float*>(action->_data) + 1) = newVal[1];
+					action->RaiseEvent();
+				}
+			}
+		}
+		for (auto& axis : _2DCompActions)
+		{
+			oldVal[0] = axis.second.first[0];
+			oldVal[1] = axis.second.first[1];
+			InputSystem::GetKeyAxisComposite2D(&newVal[0], axis.first.first.first, axis.first.first.second, axis.first.second.first, axis.first.second.second);
 			for (auto& action : axis.second.second)
 			{
 				if (oldVal[0] != newVal[0] || oldVal[1] != newVal[1])
