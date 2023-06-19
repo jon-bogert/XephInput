@@ -5,6 +5,7 @@ using namespace xe;
 
 namespace
 {
+	const float NORMALIZE_AXIS = 1.f/sqrtf(2.f);
 	bool btwn(const uint8_t val, const uint8_t min, const uint8_t max)
 	{
 		return (val >= min && val <= max);
@@ -75,4 +76,22 @@ bool xe::KeyHandler::GetMouseDown(Mouse::Button btncode)
 bool xe::KeyHandler::GetMouseUp(Mouse::Button btncode)
 {
 	return _keyUp.test(static_cast<uint8_t>(btncode));
+}
+
+float xe::KeyHandler::GetKeyAxisComposite1D(Key negative, Key positive)
+{
+	float neg = static_cast<float>(GetKeyHold(negative));
+	float pos = static_cast<float>(GetKeyHold(positive));
+	return pos - neg;
+}
+
+void xe::KeyHandler::GetKeyAxisComposite2D(float* out_v2, Key negX, Key posX, Key negY, Key posY)
+{
+	out_v2[0] = GetKeyAxisComposite1D(negX, posX);
+	out_v2[1] = GetKeyAxisComposite1D(negY, posY);
+	if (out_v2[0] != 0.f && out_v2[1] != 0.f)
+	{
+		out_v2[0] *= NORMALIZE_AXIS;
+		out_v2[1] *= NORMALIZE_AXIS;
+	}
 }

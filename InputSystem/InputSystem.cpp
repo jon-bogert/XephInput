@@ -226,6 +226,16 @@ bool xe::InputSystem::GetMouseUp(Mouse::Button btncode)
 	return Get()._keyHandler->GetMouseUp(btncode);
 }
 
+float xe::InputSystem::GetKeyAxisComposite1D(Key negative, Key positive)
+{
+	return Get()._keyHandler->GetKeyAxisComposite1D(negative, positive);
+}
+
+void xe::InputSystem::GetKeyAxisComposite2D(float* out_v2, Key negX, Key posX, Key negY, Key posY)
+{
+	return Get()._keyHandler->GetKeyAxisComposite2D(out_v2, negX, posX, negY, posY);
+}
+
 void xe::InputSystem::GetMousePos(float* out_v2, bool relativeToWindow)
 {
 	Get()._GetMousePos(out_v2, relativeToWindow);

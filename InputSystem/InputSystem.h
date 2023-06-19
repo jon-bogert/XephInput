@@ -107,6 +107,8 @@ namespace xe
         static bool GetMouseHold(Mouse::Button btncode);
         static bool GetMouseDown(Mouse::Button btncode);
         static bool GetMouseUp(Mouse::Button btncode);
+        static float GetKeyAxisComposite1D(Key negative, Key positive);
+        static void GetKeyAxisComposite2D(float* out_v2, Key negX, Key posX, Key negY, Key posY);
 
         static void GetMousePos(float* out_v2, bool relativeToWindow = true);
         static void GetMouseDelta(float* out_v2);

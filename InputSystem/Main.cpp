@@ -41,10 +41,15 @@ int main()
 	action->performed.Subscribe(&tc, std::bind(&TestClass::Print, &tc, std::placeholders::_1));
 	action->AddButton(xe::Gamepad::Button::A);
 	action->AddButton(xe::Key::Space);
+
 	while (true)
 	{
 		xe::InputSystem::Update();
 		actionMap.Update();
+
+		xe::InputSystem::GetKeyAxisComposite2D(&pos.x, xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
+
+		std::cout << pos.x << " " << pos.y << std::endl;
 	}
 	window.Terminate();
 

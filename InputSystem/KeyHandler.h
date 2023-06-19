@@ -28,6 +28,9 @@ namespace xe
 		bool GetMouseHold(Mouse::Button btncode);
 		bool GetMouseDown(Mouse::Button btncode);
 		bool GetMouseUp(Mouse::Button btncode);
+
+		float GetKeyAxisComposite1D(Key negative, Key positive);
+		void GetKeyAxisComposite2D(float* out_v2, Key negX, Key posX, Key negY, Key posY);
 	};
 }
 
