@@ -18,6 +18,15 @@ struct Vector2
 	float y;
 };
 
+class TestClass
+{
+public:
+	void Print(xe::InputAction* ctx)
+	{
+		std::cout << "BAM" << std::endl;
+	}
+};
+
 int main()
 {
 	xe::Core::Window window;
@@ -25,14 +34,17 @@ int main()
 	Vector2 pos;
 	HWND hwnd = window.GetWindowHandle();
 	xe::InputSystem::Initialize(hwnd);
-	//xe::InputSystem::SetCaptureMouse(true);
+
+	TestClass tc;
+	xe::InputActionMap actionMap;
+	xe::InputAction* action = actionMap.CreateAction("Jump", xe::InputAction::Type::Button);
+	action->performed.Subscribe(&tc, std::bind(&TestClass::Print, &tc, std::placeholders::_1));
+	action->AddButton(xe::Gamepad::Button::A);
+	action->AddButton(xe::Key::Space);
 	while (true)
 	{
 		xe::InputSystem::Update();
-
-		std::cout << (xe::InputSystem::MouseOverWindow() ? "true" : "false") << std::endl;
-		if (xe::InputSystem::GetKeyDown(xe::Key::Esc))
-			break;
+		actionMap.Update();
 	}
 	window.Terminate();
 

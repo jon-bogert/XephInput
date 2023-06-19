@@ -69,6 +69,7 @@ namespace xe
 
         Type GetType() const; 
         void AddButton(Gamepad::Button button, uint8_t player = 0);
+        void AddButton(Key key);
         void Add1DAxis(Gamepad::Axis axis, uint8_t component, uint8_t player = 0);
         void Add2DAxis(Gamepad::Axis axis, uint8_t player = 0);
 
@@ -89,6 +90,7 @@ namespace xe
         std::list<std::unique_ptr<InputAction>> _inputActions;
 
         std::map<Gamepad::Button, std::pair<bool, std::vector<InputAction*>>> _buttonActions;
+        std::map<Key, std::pair<bool, std::vector<InputAction*>>> _keyActions;
         std::map<std::pair<Gamepad::Axis, uint8_t>, std::pair<float, std::vector<InputAction*>>> _1DActions;
         std::map<Gamepad::Axis, std::pair<float[2], std::vector<InputAction*>>> _2DActions;
 
