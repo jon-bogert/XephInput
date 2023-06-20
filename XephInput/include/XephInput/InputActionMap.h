@@ -1,8 +1,12 @@
 #pragma once
-#include "InputSystem.h"
 #include <functional>
+#include <memory>
 #include <map>
 #include <vector>
+#include <string>
+
+#include "XephInput/Enums.h"
+
 
 #define XEInputActionCallback(function) static_cast<void*>(this), std::bind(&function, this, std::placeholders::_1)
 #define XEInputActionCallbackPtr(function, ptr) static_cast<void*>(ptr), std::bind(&function, ptr, std::placeholders::_1)
@@ -105,8 +109,10 @@ namespace xe
         std::map<std::pair<std::pair<Key, Key>, std::pair<Key, Key>>, std::pair<float[2], std::vector<InputAction*>>> _2DCompActions;
 
     public:
+        std::string name = "";
         //Adds an InputAction and returns a reference to it as a pointer
         InputAction* CreateAction(std::string name, InputAction::Type type = InputAction::Type::Button, InputAction::ButtonEvent buttonEvent = InputAction::ButtonEvent::Down);
+        InputAction* FindInputAction(std::string name);
         void Update();
     };
 }

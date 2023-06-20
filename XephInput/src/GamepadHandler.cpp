@@ -1,5 +1,7 @@
 #include "GamepadHandler.h"
 
+#pragma comment (lib, "XInput.lib")
+
 using namespace xe;
 
 #define BUTTONAXIS_LT 0x1000

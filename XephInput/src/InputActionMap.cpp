@@ -1,4 +1,5 @@
-#include "InputActionMap.h"
+#include "XephInput/InputActionMap.h"
+#include "XephInput/InputSystem.h"
 
 xe::InputAction::InputAction(std::string name, Type type, ButtonEvent buttonEvent)
 	: name(name), _type(type), _buttonEvent(buttonEvent)
@@ -178,6 +179,12 @@ xe::InputAction* xe::InputActionMap::CreateAction(std::string name, InputAction:
 	 InputAction* ptr = _inputActions.back().get();
 	 ptr->_map = this;
 	 return ptr;
+}
+
+xe::InputAction* xe::InputActionMap::FindInputAction(std::string name)
+{
+	auto it = std::find_if(_inputActions.begin(), _inputActions.end(), [=](const std::unique_ptr<InputAction>& x) {return x->name == name; });
+	return (it == _inputActions.end()) ? nullptr : it->get();
 }
 
 void xe::InputActionMap::Update()

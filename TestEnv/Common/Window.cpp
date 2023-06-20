@@ -13,7 +13,7 @@ LRESULT CALLBACK WindowMessageHandler(HWND handle, UINT message, WPARAM wParam, 
 	return DefWindowProc(handle, message, wParam, lParam);
 }
 
-void xe::Core::Window::Initialize(HINSTANCE instance, std::wstring appName, uint32_t width, uint32_t height)
+void Window::Initialize(HINSTANCE instance, std::wstring appName, uint32_t width, uint32_t height)
 {
 	_instance = instance;
 	_appName = appName;
@@ -39,8 +39,8 @@ void xe::Core::Window::Initialize(HINSTANCE instance, std::wstring appName, uint
 
 	const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 	const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-	const int winWidth = (static_cast<int>(rc.right - rc.left) < screenWidth) ? static_cast<int>(rc.right - rc.left): screenWidth;
-	const int winHeight = (static_cast<int>(rc.bottom - rc.top) < screenHeight) ? static_cast<int>(rc.bottom - rc.top): screenHeight;
+	const int winWidth = (static_cast<int>(rc.right - rc.left) < screenWidth) ? static_cast<int>(rc.right - rc.left) : screenWidth;
+	const int winHeight = (static_cast<int>(rc.bottom - rc.top) < screenHeight) ? static_cast<int>(rc.bottom - rc.top) : screenHeight;
 	const int left = (screenWidth - winWidth) / 2;
 	const int top = (screenHeight - winHeight) / 2;
 
@@ -62,7 +62,7 @@ void xe::Core::Window::Initialize(HINSTANCE instance, std::wstring appName, uint
 
 }
 
-void xe::Core::Window::Terminate()
+void Window::Terminate()
 {
 	DestroyWindow(_window);
 
@@ -72,7 +72,7 @@ void xe::Core::Window::Terminate()
 	_instance = nullptr;
 }
 
-void xe::Core::Window::ProcessMessage()
+void Window::ProcessMessage()
 {
 	MSG msg{};
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

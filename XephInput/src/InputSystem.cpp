@@ -1,4 +1,5 @@
-#include "InputSystem.h"
+#include "XephInput/InputSystem.h"
+
 #include "GamepadHandler.h"
 #include "KeyHandler.h"
 
@@ -162,6 +163,19 @@ bool xe::InputSystem::MouseOverWindow()
 	return !(pos[0] < 0 || pos[0] >= (float)clientRect.bottom || pos[1] < 0 || pos[1] >= (float)clientRect.right);
 }
 
+xe::InputActionMap* xe::InputSystem::CreateInputActionMap(std::string name)
+{
+	InputActionMap* map = Get()._actionMaps.emplace_back(std::make_unique<InputActionMap>()).get();
+	map->name = name;
+	return map;
+}
+
+InputActionMap* xe::InputSystem::FindInputActionMap(std::string name)
+{
+	auto it = std::find_if(Get()._actionMaps.begin(), Get()._actionMaps.end(), [=](const std::unique_ptr<InputActionMap>& x) {return x->name == name; });
+	return (it == Get()._actionMaps.end()) ? nullptr : it->get();
+}
+
 //================================================================================
 //                       IMPLEMENTATION
 //================================================================================
@@ -195,6 +209,8 @@ void xe::InputSystem::_Update()
 
 	_gamepadHandler->Update();
 	_keyHandler->Update();
+	for (auto& map : _actionMaps)
+		map->Update();
 }
 
 void xe::InputSystem::_GetMousePos(float* out_v2, bool relativeToWindow)

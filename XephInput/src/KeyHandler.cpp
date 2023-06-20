@@ -1,5 +1,6 @@
 #include "KeyHandler.h"
-#include "InputSystem.h"
+
+#include "XephInput/InputSystem.h"
 
 using namespace xe;
 

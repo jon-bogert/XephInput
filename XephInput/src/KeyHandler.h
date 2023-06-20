@@ -3,7 +3,7 @@
 #include <bitset>
 #include <memory>
 
-#include "InputSystem.h"
+#include "XephInput/InputSystem.h"
 
 namespace xe
 {
