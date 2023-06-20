@@ -96,12 +96,12 @@ namespace xe
         std::list<std::unique_ptr<InputAction>> _inputActions;
 
         //References to each input action based on their input types
-        std::map<Gamepad::Button, std::pair<bool, std::vector<InputAction*>>> _buttonActions;
+        std::map<std::pair<Gamepad::Button, uint8_t>, std::pair<bool, std::vector<InputAction*>>> _buttonActions;
         std::map<Key, std::pair<bool, std::vector<InputAction*>>> _keyActions;
         std::map<Mouse::Button, std::pair<bool, std::vector<InputAction*>>> _mouseActions;
-        std::map<std::pair<Gamepad::Axis, uint8_t>, std::pair<float, std::vector<InputAction*>>> _1DActions;
+        std::map<std::pair<std::pair<Gamepad::Axis, uint8_t>, uint8_t>, std::pair<float, std::vector<InputAction*>>> _1DActions;
         std::map<std::pair<Key, Key>, std::pair<float, std::vector<InputAction*>>> _1DCompActions;
-        std::map<Gamepad::Axis, std::pair<float[2], std::vector<InputAction*>>> _2DActions;
+        std::map<std::pair<Gamepad::Axis, uint8_t>, std::pair<float[2], std::vector<InputAction*>>> _2DActions;
         std::map<std::pair<std::pair<Key, Key>, std::pair<Key, Key>>, std::pair<float[2], std::vector<InputAction*>>> _2DCompActions;
 
     public:

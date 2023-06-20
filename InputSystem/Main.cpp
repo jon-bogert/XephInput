@@ -29,7 +29,11 @@ public:
 	}
 	void Print2(xe::InputAction* ctx)
 	{
-		std::cout << "BAM" << std::endl;
+		std::cout << "BAM1" << std::endl;
+	}
+	void Print3(xe::InputAction* ctx)
+	{
+		std::cout << "BAM2" << std::endl;
 	}
 };
 
@@ -49,11 +53,15 @@ int main()
 	action->Add2DAxis(xe::Gamepad::Axis::LS);
 	action->Add2DAxis(xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
 
-	xe::InputAction* action2 = actionMap.CreateAction("Jump", xe::InputAction::Type::Button);
+	xe::InputAction* action2 = actionMap.CreateAction("P1 Jump", xe::InputAction::Type::Button);
 	action2->performed.Subscribe(XEInputActionCallbackPtr(TestClass::Print2, &tc));
 	action2->AddButton(xe::Gamepad::Button::A);
 	action2->AddButton(xe::Key::Space);
 	action2->AddButton(xe::Mouse::Button::Right);
+
+	xe::InputAction* action3 = actionMap.CreateAction("P2 Jump", xe::InputAction::Type::Button);
+	action3->performed.Subscribe(XEInputActionCallbackPtr(TestClass::Print3, &tc));
+	action3->AddButton(xe::Gamepad::Button::A, 1);
 
 	while (true)
 	{

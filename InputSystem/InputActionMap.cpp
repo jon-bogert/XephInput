@@ -39,11 +39,11 @@ xe::InputAction::Type xe::InputAction::GetType() const
 void xe::InputAction::AddButton(Gamepad::Button button, uint8_t player)
 {
 	if (_type != Type::Button) return; // return if not of type
-	auto it = _map->_buttonActions.find(button); // try to find existing button
+	auto it = _map->_buttonActions.find({ button, player }); // try to find existing button
 	if (it == _map->_buttonActions.end()) // was not found, create one
 	{
-		_map->_buttonActions.insert({ button, {} });
-		it = _map->_buttonActions.find(button);
+		_map->_buttonActions.insert({ { button, player }, {} });
+		it = _map->_buttonActions.find({ button, player });
 	}
 	//return if this InputAction is already assigned to this button
 	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
@@ -87,11 +87,11 @@ void xe::InputAction::AddButton(Mouse::Button button)
 void xe::InputAction::Add1DAxis(Gamepad::Axis axis, uint8_t component, uint8_t player)
 {
 	if (_type != Type::Axis1D) return;
-	auto it = _map->_1DActions.find({ axis, component }); // try to find existing input
+	auto it = _map->_1DActions.find({ { axis, player }, component }); // try to find existing input
 	if (it == _map->_1DActions.end()) // was not found, create one
 	{
-		_map->_1DActions.insert({ {axis, component}, {} });
-		it = _map->_1DActions.find({ axis, component });
+		_map->_1DActions.insert({ {{ axis, player }, component}, {} });
+		it = _map->_1DActions.find({ { axis, player }, component });
 	}
 	//return if this InputAction is already assigned to this input
 	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
@@ -119,11 +119,11 @@ void xe::InputAction::Add1DAxis(Key neg, Key pos)
 void xe::InputAction::Add2DAxis(Gamepad::Axis axis, uint8_t player)
 {
 	if (_type != Type::Axis2D) return;
-	auto it = _map->_2DActions.find(axis); // try to find existing button
+	auto it = _map->_2DActions.find({ axis, player }); // try to find existing button
 	if (it == _map->_2DActions.end()) // was not found, create one
 	{
-		_map->_2DActions.insert({ axis, {} });
-		it = _map->_2DActions.find(axis);
+		_map->_2DActions.insert({ { axis, player }, {} });
+		it = _map->_2DActions.find({ axis, player });
 	}
 	//return if this InputAction is already assigned to this button
 	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
@@ -184,16 +184,16 @@ void xe::InputActionMap::Update()
 {
 	for (auto& action : _inputActions) action->_triggered = false;
 
-	{ // BUTTONS       [ Axis ]     [ oldVal | vector<pointers> ]
+	{ // BUTTONS       [ Axis | playernum ]     [ oldVal | vector<pointers> ]
 		bool both;
 		bool down;
 		bool up;
 		bool hold;
 		for (auto& button : _buttonActions) // Gamepad Buttons
 		{
-			hold = InputSystem::GetGamepadHold(button.first);
-			down = InputSystem::GetGamepadDown(button.first);
-			up = InputSystem::GetGamepadUp(button.first);
+			hold = InputSystem::GetGamepadHold(button.first.first, button.first.second);
+			down = InputSystem::GetGamepadDown(button.first.first, button.first.second);
+			up = InputSystem::GetGamepadUp(button.first.first, button.first.second);
 			both = down || up;
 			for (auto& action : button.second.second)
 			{
@@ -277,14 +277,14 @@ void xe::InputActionMap::Update()
 			}
 		}
 	}
-	{ // FLOAT       [ Axis | Dimension ]     [ oldVal | vector<pointers> ]
+	{ // FLOAT       [ [Axis | playernum] | Dimension ]     [ oldVal | vector<pointers> ]
 		float oldVal = 0.f;
 		float newVal = 0.f;
 		float v2[2] = { 0.f, 0.f };
 		for (auto& axis : _1DActions) // Gamepad Axis
 		{
 			oldVal = axis.second.first;
-			InputSystem::GetGamepadAxis(&v2[0], axis.first.first);
+			InputSystem::GetGamepadAxis(&v2[0], axis.first.first.first, axis.first.first.second);
 			newVal = v2[axis.first.second];
 			for (auto& action : axis.second.second)
 			{
@@ -315,14 +315,14 @@ void xe::InputActionMap::Update()
 			}
 		}
 	}
-	{ // VEC2       [ Axis ]     [ oldVal | vector<pointers> ]
+	{ // VEC2       [ Axis | playernum ]     [ oldVal | vector<pointers> ]
 		float oldVal[2] = { 0.f, 0.f };
 		float newVal[2] = { 0.f, 0.f };
 		for (auto& axis : _2DActions) // Gamepad Axis
 		{
 			oldVal[0] = axis.second.first[0];
 			oldVal[1] = axis.second.first[1];
-			InputSystem::GetGamepadAxis(&newVal[0], axis.first);
+			InputSystem::GetGamepadAxis(&newVal[0], axis.first.first, axis.first.second);
 			for (auto& action : axis.second.second)
 			{
 				if (oldVal[0] != newVal[0] || oldVal[1] != newVal[1])
