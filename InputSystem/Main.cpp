@@ -22,10 +22,14 @@ class TestClass
 {
 	Vector2 pos = { 0, 0 };
 public:
-	void Print(xe::InputAction* ctx)
+	void Print1(xe::InputAction* ctx)
 	{
 		ctx->ReadValue(&pos.x);
 		std::cout << pos.x << " " << pos.y << std::endl;
+	}
+	void Print2(xe::InputAction* ctx)
+	{
+		std::cout << "BAM" << std::endl;
 	}
 };
 
@@ -39,15 +43,25 @@ int main()
 
 	TestClass tc;
 	xe::InputActionMap actionMap;
+
 	xe::InputAction* action = actionMap.CreateAction("Move", xe::InputAction::Type::Axis2D);
-	action->performed.Subscribe(&tc, std::bind(&TestClass::Print, &tc, std::placeholders::_1));
+	action->performed.Subscribe(&tc, std::bind(&TestClass::Print1, &tc, std::placeholders::_1));
 	action->Add2DAxis(xe::Gamepad::Axis::LS);
 	action->Add2DAxis(xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
+
+	xe::InputAction* action2 = actionMap.CreateAction("Jump", xe::InputAction::Type::Button);
+	action2->performed.Subscribe(XEInputActionCallbackPtr(TestClass::Print2, &tc));
+	action2->AddButton(xe::Gamepad::Button::A);
+	action2->AddButton(xe::Key::Space);
+	action2->AddButton(xe::Mouse::Button::Right);
 
 	while (true)
 	{
 		xe::InputSystem::Update();
 		actionMap.Update();
+
+		if (xe::InputSystem::GetKeyDown(xe::Key::Esc))
+			break;
 	}
 	window.Terminate();
 

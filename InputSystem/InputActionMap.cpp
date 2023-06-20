@@ -68,6 +68,22 @@ void xe::InputAction::AddButton(Key key)
 	it->second.second.push_back(this);
 }
 
+void xe::InputAction::AddButton(Mouse::Button button)
+{
+	if (_type != Type::Button) return; // return if not of type
+	auto it = _map->_mouseActions.find(button); // try to find existing button
+	if (it == _map->_mouseActions.end()) // was not found, create one
+	{
+		_map->_mouseActions.insert({ button, {} });
+		it = _map->_mouseActions.find(button);
+	}
+	//return if this InputAction is already assigned to this button
+	if (std::find(it->second.second.begin(), it->second.second.end(), this) != it->second.second.end()) return;
+
+	//Add InputAction ptr to this button list;
+	it->second.second.push_back(this);
+}
+
 void xe::InputAction::Add1DAxis(Gamepad::Axis axis, uint8_t component, uint8_t player)
 {
 	if (_type != Type::Axis1D) return;
@@ -213,6 +229,35 @@ void xe::InputActionMap::Update()
 				if (key.second.first != hold)
 				{
 					key.second.first = hold;
+					if (action->_triggered) continue;
+					action->_triggered = true;
+					*static_cast<bool*>(action->_data) = hold;
+					if (action->_buttonEvent == InputAction::ButtonEvent::Down && down)
+					{
+						action->RaiseEvent();
+					}
+					else if (action->_buttonEvent == InputAction::ButtonEvent::Up && up)
+					{
+						action->RaiseEvent();
+					}
+					else if (action->_buttonEvent == InputAction::ButtonEvent::DownUp && both)
+					{
+						action->RaiseEvent();
+					}
+				}
+			}
+		}
+		for (auto& button : _mouseActions)
+		{
+			hold = InputSystem::GetMouseHold(button.first);
+			down = InputSystem::GetMouseDown(button.first);
+			up = InputSystem::GetMouseUp(button.first);
+			both = down || up;
+			for (auto& action : button.second.second)
+			{
+				if (button.second.first != hold)
+				{
+					button.second.first = hold;
 					if (action->_triggered) continue;
 					action->_triggered = true;
 					*static_cast<bool*>(action->_data) = hold;
