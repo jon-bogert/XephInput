@@ -44,40 +44,15 @@ namespace xe
         };
     };
 
+    class GamepadHandler;
     class KeyHandler;
 	class InputSystem final
 	{
 	private:
-        struct Axis
-        {
-            float lx = 0.f;
-            float ly = 0.f;
-            float rx = 0.f;
-            float ry = 0.f;
-            float lt = 0.f;
-            float rt = 0.f;
-        };
-
-        XINPUT_STATE _state{};
 		HWND _hwnd = nullptr;
 
+        GamepadHandler* _gamepadHandler = nullptr;
         KeyHandler* _keyHandler = nullptr;
-
-		bool _controllerActive = true;
-		uint8_t  _controllerCount = 0;
-        bool _controllerCountChange = false;
-
-        WORD _controllerButtonHold[XUSER_MAX_COUNT];
-        WORD _controllerButtonDown[XUSER_MAX_COUNT];
-        WORD _controllerButtonUp[XUSER_MAX_COUNT];
-        WORD _controllerAxisHold[XUSER_MAX_COUNT];
-        WORD _controllerAxisDown[XUSER_MAX_COUNT];
-        WORD _controllerAxisUp[XUSER_MAX_COUNT];
-        Axis _controllerAxisState[XUSER_MAX_COUNT];
-
-        float _triggerThreshold = 0.1f;
-        float _deadzoneMinimum = 0.3f;
-        float _deadzoneMaximum = 1.f;
 
         POINT _mousePos;
         float _mouseDelta[2] = { 0.f, 0.f };
@@ -122,18 +97,7 @@ namespace xe
 		void _Initialize(HWND& hwnd);
 		void _Update();
 
-        bool _IsControllerConnected(const uint8_t num) const;
-        bool _GetGamepadHold(Gamepad::Button button, uint8_t num = 0);
-        bool _GetGamepadDown(Gamepad::Button button, uint8_t num = 0);
-        bool _GetGamepadUp(Gamepad::Button button, uint8_t num = 0);
-        void _GetGamepadAxis(float* out_v2, Gamepad::Axis axis, uint8_t num = 0);
-
-        float _GetTriggerThreshold() const;
-        void _SetTriggerThreshold(const float threshold);
-
         void _GetMousePos(float* out_v2, bool relativeToWindow);
-
-        void UpdateAxisState(uint8_t index);
 
 	};
 }

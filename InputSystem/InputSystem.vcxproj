@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GamepadHandler.cpp" />
     <ClCompile Include="InputActionMap.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h" />
+    <ClInclude Include="GamepadHandler.h" />
     <ClInclude Include="InputActionMap.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyHandler.h" />
