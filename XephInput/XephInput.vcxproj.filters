@@ -17,14 +17,14 @@
     <ClInclude Include="include\XephInput\InputActionMap.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="src\GamepadHandler.h">
+    <ClInclude Include="include\XephInput\Enums.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="src\KeyHandler.h">
-      <Filter>Include</Filter>
+      <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="include\XephInput\Enums.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="src\GamepadHandler.h">
+      <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
