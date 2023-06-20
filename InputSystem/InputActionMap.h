@@ -53,21 +53,23 @@ namespace xe
         enum class ButtonEvent { Down, Up, DownUp };
 
         std::string name = "";
-        InputActionEvent performed;
+        InputActionEvent performed; // subscribed events will be triggered when action is performed
 
     private:
         Type _type = Type::Button;
-        ButtonEvent _buttonEvent = ButtonEvent::Down;
+        ButtonEvent _buttonEvent = ButtonEvent::Down; // Whether ".performed" will be called on button press, release, or both (Type::Button only)
 
-        InputActionMap* _map = nullptr;
+        InputActionMap* _map = nullptr; // reference to parent map
         void* _data;
-        bool _triggered = false;
+        bool _triggered = false; // flag as to whether ".performed" event has already been invoked by another binding this frame;
 
     public:
         InputAction(std::string name = "", Type type = Type::Button, ButtonEvent buttonEvent = ButtonEvent::Down);
         virtual ~InputAction();
 
         Type GetType() const; 
+
+        //Add bindings based on the Input Type
         void AddButton(Gamepad::Button button, uint8_t player = 0);
         void AddButton(Key key);
         void AddButton(Mouse::Button button);
@@ -78,6 +80,7 @@ namespace xe
 
         //TODO Remove Functions
 
+        //populates the provided pointer with appropriate data based on Input Type
         void ReadValue(void* out);
 
     private:
@@ -89,8 +92,10 @@ namespace xe
     {
         friend class InputAction;
 
+        //List of all Input Actions
         std::list<std::unique_ptr<InputAction>> _inputActions;
 
+        //References to each input action based on their input types
         std::map<Gamepad::Button, std::pair<bool, std::vector<InputAction*>>> _buttonActions;
         std::map<Key, std::pair<bool, std::vector<InputAction*>>> _keyActions;
         std::map<Mouse::Button, std::pair<bool, std::vector<InputAction*>>> _mouseActions;
@@ -100,6 +105,7 @@ namespace xe
         std::map<std::pair<std::pair<Key, Key>, std::pair<Key, Key>>, std::pair<float[2], std::vector<InputAction*>>> _2DCompActions;
 
     public:
+        //Adds an InputAction and returns a reference to it as a pointer
         InputAction* CreateAction(std::string name, InputAction::Type type = InputAction::Type::Button, InputAction::ButtonEvent buttonEvent = InputAction::ButtonEvent::Down);
         void Update();
     };

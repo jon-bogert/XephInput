@@ -189,7 +189,7 @@ void xe::InputActionMap::Update()
 		bool down;
 		bool up;
 		bool hold;
-		for (auto& button : _buttonActions)
+		for (auto& button : _buttonActions) // Gamepad Buttons
 		{
 			hold = InputSystem::GetGamepadHold(button.first);
 			down = InputSystem::GetGamepadDown(button.first);
@@ -218,7 +218,7 @@ void xe::InputActionMap::Update()
 				}
 			}
 		}
-		for (auto& key : _keyActions)
+		for (auto& key : _keyActions) // Key Buttons
 		{
 			hold = InputSystem::GetKeyHold(key.first);
 			down = InputSystem::GetKeyDown(key.first);
@@ -247,7 +247,7 @@ void xe::InputActionMap::Update()
 				}
 			}
 		}
-		for (auto& button : _mouseActions)
+		for (auto& button : _mouseActions) // Mouse Buttons
 		{
 			hold = InputSystem::GetMouseHold(button.first);
 			down = InputSystem::GetMouseDown(button.first);
@@ -281,7 +281,7 @@ void xe::InputActionMap::Update()
 		float oldVal = 0.f;
 		float newVal = 0.f;
 		float v2[2] = { 0.f, 0.f };
-		for (auto& axis : _1DActions)
+		for (auto& axis : _1DActions) // Gamepad Axis
 		{
 			oldVal = axis.second.first;
 			InputSystem::GetGamepadAxis(&v2[0], axis.first.first);
@@ -298,7 +298,7 @@ void xe::InputActionMap::Update()
 				}
 			}
 		}
-		for (auto& axis : _1DCompActions)
+		for (auto& axis : _1DCompActions) // Key Composite Axis
 		{
 			oldVal = axis.second.first;
 			newVal = InputSystem::GetKeyAxisComposite1D(axis.first.first, axis.first.second);
@@ -318,7 +318,7 @@ void xe::InputActionMap::Update()
 	{ // VEC2       [ Axis ]     [ oldVal | vector<pointers> ]
 		float oldVal[2] = { 0.f, 0.f };
 		float newVal[2] = { 0.f, 0.f };
-		for (auto& axis : _2DActions)
+		for (auto& axis : _2DActions) // Gamepad Axis
 		{
 			oldVal[0] = axis.second.first[0];
 			oldVal[1] = axis.second.first[1];
@@ -337,11 +337,15 @@ void xe::InputActionMap::Update()
 				}
 			}
 		}
-		for (auto& axis : _2DCompActions)
+		for (auto& axis : _2DCompActions) // Key Composite Axis
 		{
 			oldVal[0] = axis.second.first[0];
 			oldVal[1] = axis.second.first[1];
-			InputSystem::GetKeyAxisComposite2D(&newVal[0], axis.first.first.first, axis.first.first.second, axis.first.second.first, axis.first.second.second);
+			InputSystem::GetKeyAxisComposite2D(&newVal[0],
+				axis.first.first.first,
+				axis.first.first.second,
+				axis.first.second.first,
+				axis.first.second.second);
 			for (auto& action : axis.second.second)
 			{
 				if (oldVal[0] != newVal[0] || oldVal[1] != newVal[1])

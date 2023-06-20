@@ -45,7 +45,7 @@ int main()
 	xe::InputActionMap actionMap;
 
 	xe::InputAction* action = actionMap.CreateAction("Move", xe::InputAction::Type::Axis2D);
-	action->performed.Subscribe(&tc, std::bind(&TestClass::Print1, &tc, std::placeholders::_1));
+	action->performed.Subscribe(XEInputActionCallbackPtr(TestClass::Print1, &tc));
 	action->Add2DAxis(xe::Gamepad::Axis::LS);
 	action->Add2DAxis(xe::Key::A, xe::Key::D, xe::Key::S, xe::Key::W);
 
